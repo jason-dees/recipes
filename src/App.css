@@ -1,0 +1,37 @@
+.App {
+    -webkit-font-smoothing: antialiased;
+}
+body{
+    background-color: lavender;
+}
+th,td{
+    text-align:left;
+}
+tr.recipe-overview td{
+    width:20%;
+}
+tr.recipe-overview {
+    cursor: pointer;
+}
+@media (min-width: 1000px) {
+    #recipe-list {
+        margin-left: 10%;
+        margin-right: 10%;
+        padding: 5px;
+    }
+}
+@media (max-width: 1000px) {
+    #recipe-list {
+        margin-left: 5%;
+        margin-right: 5%;
+        padding: 5px;
+    }
+}
+@media (min-width: 1100px) {
+    #recipe-list {
+        margin-left: 20%;
+        margin-right: 20%;
+        padding: 5px;
+    }
+}
+
