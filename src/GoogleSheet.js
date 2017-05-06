@@ -15,10 +15,12 @@ export default class GoogleSheet {
 
     getSheet(after = () => {}){
         let self = this;
-        fetch(self.sourceUrl).then((response) => response.json()).then((json) => {
-            self.jsonify(json);
-            after();
-        });
+        return fetch(self.sourceUrl)
+            .then((response) => response.json())
+            .then((json) => {
+                self.jsonify(json);
+                after();
+            });
     }
 
     jsonify(json){
