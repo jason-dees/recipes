@@ -5,11 +5,12 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import Linq from '../linq.js';
 
 import Modal from 'react-bootstrap/lib/Modal';
 import Table from 'react-bootstrap/lib/Table';
 import Panel from 'react-bootstrap/lib/Panel';
-import { fetchCategories } from '../actions/sheetsactions.js';
+import { fetchCategories, fetchDirections } from '../actions/sheetsactions.js';
 
 const fatCalories = 8;
 const proteinCalories = 4;
@@ -18,51 +19,43 @@ const carbCalories = 4;
 class RecipeCategoryTable extends Component {
     static propTypes = {
         categories: PropTypes.array.isRequired,
+        directions: PropTypes.array.isRequired,
         isFetching: PropTypes.bool.isRequired,
         lastUpdated: PropTypes.number,
         dispatch: PropTypes.func.isRequired
     };
     componentDidMount() {
-        const { dispatch  } = this.props;
+        const { dispatch } = this.props;
         dispatch(fetchCategories("1IeVSP4r8bQ2lAtgY8HnPGSk-chEYmml0Cc42s8ewRqc"));
-    }
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            categories: []
-        };
-
-        /*masterSheet.getSheet(() => {
-            let bigList = Linq(masterSheet.results);
-            let categories = bigList.GroupBy((c) => c.category);
-            this.setState({categoryList: categories});
-        });*/
+        dispatch(fetchDirections("1IeVSP4r8bQ2lAtgY8HnPGSk-chEYmml0Cc42s8ewRqc"));
     }
 
     render(){
+        const { categories, directions } = this.props;
         return(
             <div id="recipe-list">
-                {this.state.categories.map((category) =>
+                {categories.map((category) =>
                     <RecipeCategory categoryName={category[0].category} key={category[0].category}
-                                    recipeList={category} />
+                        recipeList={category} directions={directions.Where(d => d[0].key === category[0].category)[0]}/>
                 )}
             </div>
         );
     }
 }
 const mapStateToProps = state => {
-    const { categories } = state;
+    const { categories, directions } = state;
     const {
         isFetching,
         lastUpdated,
     } =  {
         isFetching: true,
-        categories: []
+        categories: [],
+        directions: []
     };
 
     return {
         categories,
+        directions,
         isFetching,
         lastUpdated
     }
@@ -71,18 +64,24 @@ const mapStateToProps = state => {
 class RecipeCategory extends Component {
     constructor(props){
         super(props);
+        var directions = props.directions || Linq([]);
+        console.log(directions);
 
         this.state = {
             recipes: props.recipeList.GroupBy((c) => c.key),
-            name: props.categoryName
+            name: props.categoryName,
+            directions: directions.OrderBy(d => d.order)
         };
     }
     render(){
+        const { directions, recipes } = this.state;
         return(
             <Panel header={this.state.name} collapsible defaultExpanded>
-                <div>
-                    Directions!
-                </div>
+                <ol>
+                    {directions.map((direction) =>
+                        <li key={direction.key + direction.order}>{direction.text}</li>
+                    )}
+                </ol>
                 <Table responsive hover fill>
                     <tbody>
                     <tr>
@@ -92,7 +91,7 @@ class RecipeCategory extends Component {
                         <th>Fats</th>
                         <th>Protein</th>
                     </tr>
-                    {this.state.recipes.map((recipe) =>
+                    {recipes.map((recipe) =>
                         <Recipe ingredients={recipe} key={recipe[0].key} name={recipe[0].key} />
                     )}
                     </tbody>
@@ -190,7 +189,6 @@ class RecipeOverview extends Component {
 }
 
 class Ingredient extends Component{
-    //Serving size in grams, carbohydrate, fat, protein, name, index (?)
     constructor(props){
         super(props);
         this.state = props.ingredient;
@@ -207,6 +205,5 @@ class Ingredient extends Component{
         );
     }
 }
-
 
 export default connect(mapStateToProps)(RecipeCategoryTable)

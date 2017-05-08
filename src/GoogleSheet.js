@@ -10,7 +10,6 @@ export default class GoogleSheet {
         this.results = new SheetsResult();
 
         this.sourceUrl = 'https://spreadsheets.google.com/feeds/list/' + source + '/' + index + '/public/basic?alt=json';
-
     }
 
     getSheet(after = () => {}){

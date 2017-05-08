@@ -2,13 +2,14 @@
  * Created by jasondees on 5/6/17.
  */
 import {
-    REQUEST_CATEGORIES, RECEIVE_CATEGORIES
+    REQUEST_CATEGORIES, RECEIVE_CATEGORIES,
+    REQUEST_DIRECTIONS, RECEIVE_DIRECTIONS
 } from '../actions/sheetsactions.js';
 
 export default (state = {
     isFetching: false,
-    categories: [] }, action) => {
-    console.log(action);
+    categories: [],
+    directions: []}, action) => {
     switch(action.type){
         case REQUEST_CATEGORIES:
             return {
@@ -22,8 +23,19 @@ export default (state = {
                 categories: action.categories,
                 lastUpdated: action.receivedAt
             };
+        case REQUEST_DIRECTIONS:
+            return {
+                ...state,
+                isFetching: true
+            };
+        case RECEIVE_DIRECTIONS:
+            return {
+                ...state,
+                isFetching: false,
+                directions: action.directions,
+                lastUpdated: action.receivedAt
+            };
         default:
-            console.log(state);
             return state;
         //get recipe list
     }

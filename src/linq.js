@@ -362,6 +362,7 @@
 
     arr.Where = function(fn){
         fn = fn || (element => element);
+
         return generic_fn(function(array,element){
             if(fn(element)){
                 array.push(element);
