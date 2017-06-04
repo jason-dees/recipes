@@ -16,9 +16,11 @@ const store = createStore(
 class App extends Component {
     render() {
         return (
-            <Provider store={store}>
-                <RecipeCategoryTable />
-            </Provider>
+            <div>
+                <Provider store={store}>
+                    <RecipeCategoryTable />
+                </Provider>
+            </div>
         );
     }
 }

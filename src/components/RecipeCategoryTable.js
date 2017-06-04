@@ -11,6 +11,7 @@ import Modal from 'react-bootstrap/lib/Modal';
 import Table from 'react-bootstrap/lib/Table';
 import Panel from 'react-bootstrap/lib/Panel';
 import { fetchCategories, fetchDirections } from '../actions/sheetsactions.js';
+import RecipePieChart from "./RecipePieChart";
 
 const fatCalories = 8;
 const proteinCalories = 4;
@@ -33,7 +34,7 @@ class RecipeCategoryTable extends Component {
     render(){
         const { categories, directions } = this.props;
         return(
-            <div id="recipe-list">
+            <div className="main">
                 {categories.map((category) =>
                     <RecipeCategory categoryName={category[0].category} key={category[0].category}
                         recipeList={category} directions={directions.Where(d => d[0].key === category[0].category)[0]}/>
@@ -65,7 +66,6 @@ class RecipeCategory extends Component {
     constructor(props){
         super(props);
         var directions = props.directions || Linq([]);
-        console.log(directions);
 
         this.state = {
             recipes: props.recipeList.GroupBy((c) => c.key),
@@ -77,11 +77,13 @@ class RecipeCategory extends Component {
         const { directions, recipes } = this.state;
         return(
             <Panel header={this.state.name} collapsible defaultExpanded>
+                <Panel collapsible header="Directions">
                 <ol>
                     {directions.map((direction) =>
                         <li key={direction.key + direction.order}>{direction.text}</li>
                     )}
                 </ol>
+                </Panel>
                 <Table responsive hover fill>
                     <tbody>
                     <tr>
@@ -106,7 +108,7 @@ class Recipe extends Component {
         super(props);
         this.state = {
             name:  props.name,
-            ingredients: props.ingredients,
+            ingredients: Linq(props.ingredients),
             calories: props.ingredients.Sum(this.calculateCalories),
             carbohydrates: props.ingredients.Select((i) => i.carbohydrates).Sum(),
             fats: props.ingredients.Select((i) => i.fats).Sum(),
@@ -139,6 +141,10 @@ class Recipe extends Component {
                         </Modal.Header>
                         <Modal.Body>
                             <RecipeOverview ingredients={this.state.ingredients} />
+                            <RecipePieChart
+                                protein={this.state.protein}
+                                fats={this.state.fats}
+                                carbohydrates={this.state.carbohydrates} />
                         </Modal.Body>
                     </Modal>
                 </td>

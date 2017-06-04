@@ -4,9 +4,12 @@
   "private": true,
   "homepage": "http://recipes.jhdees.local",
   "dependencies": {
+    "d3": "^4.9.1",
     "prop-types": "^15.5.8",
     "react": "^15.5.4",
     "react-bootstrap": "^0.30.10",
+    "react-d3-basic": "^1.6.11",
+    "react-d3-tooltip": "^1.4.14",
     "react-dom": "^15.5.4",
     "react-redux": "^5.0.4",
     "redux-devtools": "^3.4.0"
