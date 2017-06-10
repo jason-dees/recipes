@@ -1,12 +1,7 @@
 import React, { Component } from 'react';
-import d3, {PieChart } from 'react-d3-basic';
+import {PieChart } from 'react-d3-basic';
 
 class RecipePieChart extends  Component{
-
-    constructor(props){
-        super(props);
-    }
-
     render(){
         const data = [
             {name: "Carbohydrates", field: this.props.carbohydrates},
@@ -30,10 +25,10 @@ class RecipePieChart extends  Component{
 
         const name = function(d){
             return d.name;
-        }
+        };
         const value = function(d){
             return +d.field;
-        }
+        };
         return(
             <div>
                 <PieChart

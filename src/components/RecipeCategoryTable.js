@@ -135,18 +135,11 @@ class Recipe extends Component {
             <tr className="recipe-overview" onClick={this.switchModalVisibility}>
                 <td>
                     {this.state.name}
-                    <Modal show={this.state.show} onHide={this.switchModalVisibility}>
-                        <Modal.Header closeButton>
-                            <Modal.Title>{this.state.name}</Modal.Title>
-                        </Modal.Header>
-                        <Modal.Body>
-                            <RecipeOverview ingredients={this.state.ingredients} />
-                            <RecipePieChart
-                                protein={this.state.protein}
-                                fats={this.state.fats}
-                                carbohydrates={this.state.carbohydrates} />
-                        </Modal.Body>
-                    </Modal>
+                    <RecipeModalOverView
+                        show={this.state.show}
+                        onHide={this.switchModalVisibility}
+                        recipe={this.state}
+                    />
                 </td>
                 <td>{this.state.calories}</td>
                 <td>{this.state.carbohydrates}</td>
@@ -162,32 +155,63 @@ Recipe.propTypes = {
     ingredients: PropTypes.array.isRequired
 };
 
-class RecipeOverview extends Component {
-    constructor(props){
-        super(props);
+class RecipeModalOverView extends Component{
+    render(){
+        const { show, onHide, recipe }  = this.props;
+        return (
+            <Modal show={show} onHide={onHide}>
+                <Modal.Header closeButton>
+                    <Modal.Title>{recipe.name}</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <RecipeTableOverview ingredients={recipe.ingredients} />
+                    <RecipePieChart
+                        protein={recipe.protein * 4}
+                        fats={recipe.fats * 8}
+                        carbohydrates={recipe.carbohydrates * 4} />
+                </Modal.Body>
+            </Modal>
+        );
+    }
+}
 
-        this.state = {
-            ingredients: props.ingredients,
-            name: props.name,
-        }
+class RecipeTableOverview extends Component {
+
+    calculateCalories(ingredient){
+        let calories = ingredient.carbohydrates * carbCalories;
+        calories += ingredient.fats * fatCalories;
+        calories += ingredient.protein * proteinCalories;
+        return calories;
     }
 
     render(){
+        const { ingredients} = this.props;
+        let totalCalories = ingredients.Sum(this.calculateCalories);
         return(
             <Table condensed>
                 <thead>
-                <tr>
-                    <th>Ingredient</th>
-                    <th>Serving Size (g)</th>
-                    <th>Carbohydrate</th>
-                    <th>Fat</th>
-                    <th>Protein</th>
-                </tr>
+                    <tr>
+                        <th>Ingredient</th>
+                        <th>Amount (g)</th>
+                        <th>Carbohydrate (g)</th>
+                        <th>Fat (g)</th>
+                        <th>Protein (g)</th>
+                    </tr>
                 </thead>
+                <tfoot>
+                    <tr>
+                        <th>Totals</th>
+                        <th>{totalCalories}</th>
+                        <th>{ingredients.Select((i) => i.carbohydrates).Sum()}</th>
+                        <th>{ingredients.Select((i) => i.fats).Sum()}</th>
+                        <th>{ingredients.Select((i) => i.protein).Sum()}</th>
+                    </tr>
+                </tfoot>
                 <tbody>
-                {this.state.ingredients.map((ingredient) =>
-                    <Ingredient ingredient={ingredient}
-                                key={ingredient.ingredient} />)}
+                {ingredients.map((ingredient) =>
+                    <Ingredient
+                        ingredient={ingredient}
+                        key={ingredient.ingredient} />)}
                 </tbody>
             </Table>
         );
@@ -195,18 +219,15 @@ class RecipeOverview extends Component {
 }
 
 class Ingredient extends Component{
-    constructor(props){
-        super(props);
-        this.state = props.ingredient;
-    }
     render() {
+        const {ingredient} = this.props;
         return (
             <tr>
-                <td>{this.state.ingredient}</td>
-                <td>{this.state.amount}</td>
-                <td>{this.state.carbohydrates}</td>
-                <td>{this.state.fats}</td>
-                <td>{this.state.protein}</td>
+                <td>{ingredient.ingredient}</td>
+                <td>{ingredient.amount}</td>
+                <td>{ingredient.carbohydrates}</td>
+                <td>{ingredient.fats}</td>
+                <td>{ingredient.protein}</td>
             </tr>
         );
     }
