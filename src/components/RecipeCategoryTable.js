@@ -35,9 +35,11 @@ class RecipeCategoryTable extends Component {
         const { categories, directions } = this.props;
         return(
             <div className="main">
-                {categories.map((category) =>
-                    <RecipeCategory categoryName={category[0].category} key={category[0].category}
-                        recipeList={category} directions={directions.Where(d => d[0].key === category[0].category)[0]}/>
+                {categories.map((category) => {
+                    let categoryDirections = directions.Where(d => d[0].key === category[0].category)[0];
+                    return <RecipeCategory categoryName={category[0].category} key={category[0].category}
+                        recipeList={category} directions={categoryDirections}/>;
+                    }
                 )}
             </div>
         );
