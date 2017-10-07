@@ -12,7 +12,7 @@ export const receiveCategories = (categories) => ({
     receivedAt: Date.now()
 });
 
-export const fetchCategories = sheetsrc => dispatch => {
+export const fetchCategories = (sheetsrc) => dispatch => {
     dispatch({
         type: REQUEST_CATEGORIES,
         categories: []
@@ -31,7 +31,7 @@ export const receiveDirections = (directions) => ({
     receivedAt: Date.now()
 });
 
-export const fetchDirections = sheetsrc => dispatch => {
+export const fetchDirections = (sheetsrc) => dispatch => {
     dispatch({
         type: REQUEST_DIRECTIONS,
         categories: []
