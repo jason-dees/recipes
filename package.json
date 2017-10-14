@@ -4,15 +4,17 @@
   "private": true,
   "homepage": "http://recipes.jhdees.local",
   "dependencies": {
-    "d3": "^4.9.1",
-    "prop-types": "^15.5.8",
-    "react": "^15.5.4",
-    "react-bootstrap": "^0.30.10",
+    "d3": "^4.11.0",
+    "prop-types": "^15.6.0",
+    "react": "^15.6.2",
+    "react-bootstrap": "^0.31.3",
     "react-d3-basic": "^1.6.11",
     "react-d3-tooltip": "^1.4.14",
-    "react-dom": "^15.5.4",
-    "react-redux": "^5.0.4",
-    "redux-devtools": "^3.4.0"
+    "react-dom": "^15.6.2",
+    "react-redux": "^5.0.6",
+    "redux": "^3.7.2",
+    "redux-devtools": "^3.4.0",
+    "redux-thunk": "^2.2.0"
   },
   "devDependencies": {
     "react-scripts": "0.9.5"

@@ -36,11 +36,13 @@ class RecipeCategoryTable extends Component {
         return(
             <div className="main">
                 {categories.map((category) => {
-                    let categoryDirections = directions.Where(d => d[0].key === category[0].category)[0];
-                    return <RecipeCategory categoryName={category[0].category} key={category[0].category}
-                        recipeList={category} directions={categoryDirections}/>;
+                    if (directions.length > 0) {
+                        let categoryDirections = directions.Where(d => d[0].key === category[0].category)[0];
+                        return <RecipeCategory categoryName={category[0].category} key={category[0].category}
+                            recipeList={category} directions={categoryDirections}/>;
                     }
-                )}
+                    return '';
+                })}
             </div>
         );
     }
@@ -106,6 +108,10 @@ class RecipeCategory extends Component {
 }
 
 class Recipe extends Component {
+    static propTypes = {
+        name: PropTypes.string.isRequired,
+        ingredients: PropTypes.array.isRequired
+    };
     constructor(props) {
         super(props);
         this.state = {
@@ -152,10 +158,6 @@ class Recipe extends Component {
     }
 }
 
-Recipe.propTypes = {
-    name: PropTypes.string.isRequired,
-    ingredients: PropTypes.array.isRequired
-};
 
 class RecipeModalOverView extends Component{
     render(){
@@ -203,7 +205,7 @@ class RecipeTableOverview extends Component {
                 <tfoot>
                     <tr>
                         <th>Totals</th>
-                        <th>{totalCalories}</th>
+                        <th />
                         <th>{ingredients.Select((i) => i.carbohydrates).Sum()}</th>
                         <th>{ingredients.Select((i) => i.fats).Sum()}</th>
                         <th>{ingredients.Select((i) => i.protein).Sum()}</th>

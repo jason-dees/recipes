@@ -27,6 +27,7 @@ class RecipePieChart extends  Component{
         ];
 
         let totalCalories = Linq(data).Sum(d => d.field);
+        let chartTitle = totalCalories + " Calories";
         let carbPercent = this.makeAPercent(carbohydrates / totalCalories);
         let fatPercent = this.makeAPercent(fats / totalCalories);
         let proteinPercent = this.makeAPercent(protein / totalCalories);
@@ -48,6 +49,7 @@ class RecipePieChart extends  Component{
 
         return(
             <div>
+                <h4 style={{"textAlign": "center", fontWeight: "normal"}}>{chartTitle}</h4>
                 <PieChart
                     width={500}
                     height={200}
