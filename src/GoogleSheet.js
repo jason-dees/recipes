@@ -12,14 +12,13 @@ export default class GoogleSheet {
         this.sourceUrl = 'https://spreadsheets.google.com/feeds/list/' + source + '/' + index + '/public/basic?alt=json';
     }
 
-    getSheet(after = () => {}){
+    getSheet(){
         let self = this;
         return fetch(self.sourceUrl)
             .then((response) => response.json())
-            .then((json) => {
-                self.jsonify(json);
-                after();
-            });
+            .then((json) => 
+                self.jsonify(json)
+            );
     }
 
     jsonify(json){

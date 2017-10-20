@@ -18,7 +18,7 @@ export const fetchCategories = (sheetsrc) => dispatch => {
         categories: []
     });
     let sheet = new GoogleSheet(sheetsrc, 2);
-    return sheet.getSheet(() => {
+    return sheet.getSheet().then(() => {
         let bigList = Linq(sheet.results);
         let categories = bigList.GroupBy((c) => c.category);
         dispatch(receiveCategories(categories));
@@ -37,7 +37,7 @@ export const fetchDirections = (sheetsrc) => dispatch => {
         categories: []
     });
     let sheet = new GoogleSheet(sheetsrc, 3 );
-    return sheet.getSheet(() => {
+    return sheet.getSheet().then(() => {
         let bigList = Linq(sheet.results);
         let directions = bigList.GroupBy((c) => c.key);
         dispatch(receiveDirections(directions));

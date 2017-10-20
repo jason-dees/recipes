@@ -79,6 +79,7 @@ class RecipeCategory extends Component {
     }
     render(){
         const { directions, recipes } = this.state;
+        console.log(recipes);
         return(
             <Panel header={this.state.name} collapsible defaultExpanded>
                 <Panel collapsible header="Directions">
@@ -190,7 +191,6 @@ class RecipeTableOverview extends Component {
 
     render(){
         const { ingredients} = this.props;
-        let totalCalories = ingredients.Sum(this.calculateCalories);
         return(
             <Table condensed>
                 <thead>
