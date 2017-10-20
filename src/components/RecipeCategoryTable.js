@@ -79,7 +79,6 @@ class RecipeCategory extends Component {
     }
     render(){
         const { directions, recipes } = this.state;
-        console.log(recipes);
         return(
             <Panel header={this.state.name} collapsible defaultExpanded>
                 <Panel collapsible header="Directions">
